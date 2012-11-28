@@ -9,7 +9,7 @@
  * 
  */
 
-class Webconference_Model_WebconferenceConfig extends Tinebase_Record_Abstract
+class Webconference_Model_Room extends Tinebase_Record_Abstract
 {  
     /**
      * key in $_validators/$_properties array for the filed which 
@@ -35,7 +35,6 @@ class Webconference_Model_WebconferenceConfig extends Tinebase_Record_Abstract
      */
     protected $_validators = array(
         'id'                    => array(Zend_Filter_Input::ALLOW_EMPTY => true),
-        'name'                  => array(Zend_Filter_Input::ALLOW_EMPTY => true),
         'container_id'          => array(Zend_Filter_Input::ALLOW_EMPTY => true),
     // @todo add more fields
     // modlog information
@@ -46,10 +45,17 @@ class Webconference_Model_WebconferenceConfig extends Tinebase_Record_Abstract
         'is_deleted'            => array(Zend_Filter_Input::ALLOW_EMPTY => true),
         'deleted_time'          => array(Zend_Filter_Input::ALLOW_EMPTY => true),
         'deleted_by'            => array(Zend_Filter_Input::ALLOW_EMPTY => true),
-    // relations (linked Webconference_Model_ExampleRecord records) and other metadata
-        'description'           => array(Zend_Filter_Input::ALLOW_EMPTY => true, Zend_Filter_Input::DEFAULT_VALUE => NULL),
-        'url'                   => array(Zend_Filter_Input::ALLOW_EMPTY => false),    
-        'salt'                  => array(Zend_Filter_Input::ALLOW_EMPTY => false),
+
+	'title'			=> array(Zend_Filter_Input::ALLOW_EMPTY => true, Zend_Filter_Input::DEFAULT_VALUE => NULL),
+        'room_name'             => array(Zend_Filter_Input::ALLOW_EMPTY => false),    
+        'create_date'           => array(Zend_Filter_Input::ALLOW_EMPTY => false),
+	'status'		=> array(Zend_Filter_Input::ALLOW_EMPTY => false),
+	'webconference_config_id'=> array(Zend_Filter_Input::ALLOW_EMPTY => false),
+	'room_url'              => array(Zend_Filter_Input::ALLOW_EMPTY => true),
+	'conference_role'       => array(Zend_Filter_Input::ALLOW_EMPTY => true),
+	'call_date'             => array(Zend_Filter_Input::ALLOW_EMPTY => true),
+	'user_email'            => array(Zend_Filter_Input::ALLOW_EMPTY => true),
+	'user_name'             => array(Zend_Filter_Input::ALLOW_EMPTY => true)
     );
 
     /**
@@ -60,7 +66,9 @@ class Webconference_Model_WebconferenceConfig extends Tinebase_Record_Abstract
     protected $_datetimeFields = array(
         'creation_time',
         'last_modified_time',
-        'deleted_time'
+        'deleted_time',
+	'create_date',
+	'call_date'
     );
     
     /**

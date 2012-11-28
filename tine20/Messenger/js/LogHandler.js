@@ -61,7 +61,8 @@ Tine.Messenger.LogHandler = {
         var type = $(presence).attr("type"),
             from = $(presence).attr("from"),
             to = $(presence).attr("to"),
-            jid = Strophe.getBareJidFromJid(from);
+            jid = Strophe.getBareJidFromJid(from),
+            show = $(presence).find('show');
 
         if (type !== 'error'){
             if(to !== from){
@@ -77,26 +78,28 @@ Tine.Messenger.LogHandler = {
                         if(type == 'unavailable'){
                             status = app.i18n._('is unavailable');
                             Tine.Messenger.RosterTree().updateBuddy(jid, IMConst.ST_UNAVAILABLE);
+                            Tine.Messenger.IM.verifyOfflineContactsDisplay();
                         } else {
                             Tine.Messenger.RosterTree().setResource(from);
-                            var show = $(presence).find('show').text(),
+                            var show_text = show.text(),
                                 status_text = $(presence).find('status').text() ? 
-                                                app.i18n._('Status text')+': '+ $(presence).find('status').text() : '';
-                            if(show == 'away') {
+                                              app.i18n._('Status text')+': '+ $(presence).find('status').text() : '';
+                            if(show_text == 'away') {
                                 status = app.i18n._('is away');
                                 Tine.Messenger.RosterTree().updateBuddy(jid, IMConst.ST_AWAY, '', status_text);
-                            }else if(show == 'dnd'){
+                            }else if(show_text == 'dnd'){
                                 status = app.i18n._('is busy');
                                 Tine.Messenger.RosterTree().updateBuddy(jid, IMConst.ST_DONOTDISTURB, '', status_text);
-                            } else if(show == 'xa'){
+                            } else if(show_text == 'xa'){
                                 status = app.i18n._('auto status (idle)');
                                 Tine.Messenger.RosterTree().updateBuddy(jid, IMConst.ST_XA, '', status_text);
                             } else {
+                                $('div.available').show();
                                 status = app.i18n._('is on-line');
                                 Tine.Messenger.RosterTree().updateBuddy(jid, IMConst.ST_AVAILABLE, '', status_text);
                             }
                         }
-                        if(status){
+                        if(status && (show.length > 0 || type == 'unavailable')){
                             Tine.Messenger.LogHandler.status(title, status, 'STATUS');
                             Tine.Messenger.LogHandler.onChatStatusChange(from, title+" "+status);
                         }
@@ -141,7 +144,6 @@ Tine.Messenger.LogHandler = {
         
         if (type == IMConst.SB_SUBSCRIBED) {
             Tine.Messenger.LogHandler.status(name, app.i18n._('Accept your subscription'));
-            Tine.Messenger.LogHandler.status(name, _('Accept your subscription'), 'INFO');
             Tine.Messenger.RosterTree().updateBuddy(jid, IMConst.ST_AVAILABLE, IMConst.SB_BOTH);
         }else if(type == IMConst.SB_SUBSCRIBE){
                 var buddy = Tine.Messenger.RosterHandler.getContactElement(jid);
