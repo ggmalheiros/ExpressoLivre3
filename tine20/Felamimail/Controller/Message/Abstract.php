@@ -593,6 +593,9 @@ abstract class Felamimail_Controller_Message_Abstract extends Tinebase_Controlle
         $messageBody = '';
         
         foreach ($bodyParts as $partId => $partStructure) {
+            if($partStructure['disposition']['type'] == 'ATTACHMENT')
+                continue;
+            
             $bodyPart = $this->getMessagePart($_message, $partId, TRUE);
             
             $body = $this->_getDecodedBodyContent($bodyPart, $partStructure);
@@ -755,7 +758,6 @@ abstract class Felamimail_Controller_Message_Abstract extends Tinebase_Controlle
         $config->set('HTML.DefinitionRev', 1);
         $config->set('CSS.AllowTricky', 1);
         $config->set('CSS.ForbiddenProperties', array());
-        $config->set('CSS.AllowedProperties', array('overflow','height'));
         $config->set('Cache.SerializerPath', $path);
         
         if (in_array('images', $this->_purifyElements)) {

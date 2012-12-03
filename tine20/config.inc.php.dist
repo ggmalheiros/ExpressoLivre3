@@ -6,6 +6,7 @@
 
 // minimal configuration
 return array(
+    'IMAPAdapterMaxSearchResults' => 1000,
     'messagecache' => 'sql',
     'captcha' => array('count'=>1),
 	'database' => array(
@@ -60,6 +61,12 @@ return array(
             array (
                 'name' => 'Expresso 3.0',
                 'path' => 'expresso30',
+                'useBlueAsBase' => 1,
+            ),
+        2 =>
+            array (
+                'name' => 'Serpro',
+                'path' => 'serpro',
                 'useBlueAsBase' => 1,
             ),
         ),
